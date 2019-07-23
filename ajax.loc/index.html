@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>json пример</title>
+	<style>
+
+	</style>
+</head>
+<body>
+	<form action="#" name="myForm">
+		<p>
+		<input type="text" name="token" placeholder="Enter token">
+		</p>
+		<p>
+		<select name="action">
+			<option value="getCars">Carlist</option>
+			<option value="getCountries">Countrieslist</option>
+			<option value="getPlayers">Playerlist</option>
+			<option value="getDrags">Draglist</option>
+		</select>
+		</p>
+		<p>
+		<input type="submit" name="send" value="Отправить">
+		</p>
+	</form>
+</body>
+	<script>
+		// let user = {
+		// 	name: 'Tom',
+		// 	age: 45
+		// };
+
+		// let serializableData = JSON.stringify(user);
+		// console.log(serializableData);
+
+		// let tom = JSON.parse(serializableData);
+		// console.log(tom.name);
+
+
+
+		document.myForm.send.addEventListener('click', () => {
+				event.preventDefault();
+				let token = document.myForm.token.value;
+				let action = document.myForm.action.value;
+
+			// XMLHttpRequest - встроенный объект реализации ajax
+			// создание объекта
+			// 1
+			let xhr = new XMLHttpRequest();
+
+			// конфигурация
+			// 2
+			xhr.open('GET', `client_api.php?token=${token}&action=${action}`, true);
+
+			// отправка
+			// 3
+			xhr.send();
+
+			// событие смены состояния запроса
+			xhr.onreadystatechange = ()=> {
+				if (xhr.readyState !== 4) {
+					return;
+				}
+				if (xhr.status !== 200) {
+					console.log(`${xhr.status}: ${xhr.statusText}`);
+				}
+				else {
+					alert(xhr.responseText);
+					let obj = JSON.parse(xhr.responseText);
+					
+					let doc = document.createElement("h1");
+					doc.textContent = `${obj['1']} ${obj['2']} ${obj['3']} `;
+					document.body.appendChild(doc);
+				}
+			};
+
+		});
+		
+	</script>
+</html>
